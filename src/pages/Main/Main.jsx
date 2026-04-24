@@ -1,18 +1,28 @@
-import { useLocation, useNavigate } from "react-router-dom";
 import FilterButton from "../../components/common/button/FilterButton";
-import { useEffect, useState } from "react";
-import filters from "../../components/common/filters";
+import { useState } from "react";
+import filters from "../../data/filters";
 import styled from "styled-components"; 
 import Modal from "../../components/common/modal/Modal"
 import IconUrl from "../../assets/icons/vector_icon.png";
+import ProductList from "../../components/product/ProductList";
+import products from "../../data/products";
 
-const FilterContainer = styled.div`
+const Container = styled.div`
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 20px;
+    flex-direction: column;
+`;
+
+const FilterButtonContainer = styled.div`
     display: flex;
-    padding-right: 130px;
-    padding-left: 130px;
     align-items: center;
-    gap: 20px;
-    margin-top: 20px;
+    gap: 12px;
+    margin-bottom: 60px;
+`;
+
+const ProductListContainer = styled.div`
+    width: 100%;
 `;
 const TextBox = styled.div`
     display: flex;
@@ -31,7 +41,6 @@ const VactorIcon = styled.img`
     height: 5px;
 `;
 
-
 export default function Main(){
     const [modalOpen, setModalOpen] = useState(false); // 모달 상태
     const [selectedFilter, setSelectedFilter] = useState(null); // 선택된 필터 상태
@@ -46,7 +55,8 @@ export default function Main(){
     }
 
     return (
-        <FilterContainer>
+        <Container>
+            <FilterButtonContainer>
             {filters.map((filter) => (
                 <FilterButton 
                     key={filter.name} 
@@ -54,6 +64,7 @@ export default function Main(){
                     icon={<VactorIcon src={IconUrl} alt="vector icon" />}
                     onClick={() => {handleFilterClick(filter.name)}} />
             ))}
+            </FilterButtonContainer>
             {modalOpen == true && (
                 <Modal onClose={onClose}>
                     <TextBox>
@@ -73,7 +84,11 @@ export default function Main(){
                     </TextBox>
                 </Modal>
             )}
-
-        </FilterContainer>
+            <ProductListContainer>
+                <ProductList 
+                    products={products}
+                />
+            </ProductListContainer>
+        </Container> 
     )
 }
