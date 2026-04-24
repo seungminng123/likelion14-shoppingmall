@@ -1,6 +1,5 @@
 import { useState } from "react";
 import styled from "styled-components";
-import IconUrl from "../../../assets/icons/vector_icon.png";
 
 const StyledFilterButton = styled.div`
     display: flex;
@@ -12,17 +11,14 @@ const StyledFilterButton = styled.div`
     background: #F2F2F2;
     white-space: nowrap; //줄바꿈 금지
     font-size: 13px;
-`;
-const VactorIcon = styled.img`
-    width: 10px;
-    height: 5px;
+    min-width: 60px;
 `;
 
-const FilterButton = ({buttonName, onClick}) => {
+const FilterButton = ({buttonName, onClick, icon}) => {
     return(
         <StyledFilterButton onClick={onClick}>
             {buttonName}
-            <VactorIcon src={IconUrl} alt="vector icon" />
+            {icon}
         </StyledFilterButton>
     )
 }
