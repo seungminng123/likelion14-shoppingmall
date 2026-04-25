@@ -13,7 +13,7 @@ function ProductList({products}){
         <ProductGrid>
             {products.map((product) => (
                 <ProductCard 
-                    key={product.name} 
+                    key={product.id} 
                     imageUrl={product.image}
                     name={product.name} 
                     price={product.price} 

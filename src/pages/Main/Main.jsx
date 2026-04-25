@@ -4,8 +4,10 @@ import filters from "../../data/filters";
 import styled from "styled-components"; 
 import Modal from "../../components/common/modal/Modal"
 import IconUrl from "../../assets/icons/vector_icon.png";
+import IconUrl2 from "../../assets/icons/icon.png";
 import ProductList from "../../components/product/ProductList";
 import products from "../../data/products";
+import SortDropdown from "../../components/common/sort/SortDropdown";
 
 const Container = styled.div`
     max-width: 1200px;
@@ -24,6 +26,12 @@ const FilterButtonContainer = styled.div`
 const ProductListContainer = styled.div`
     width: 100%;
 `;
+const Sort = styled.div`
+    display : flex;
+    justify-content: flex-end;
+    width: 100%;
+    gap: 5px;
+`;
 const TextBox = styled.div`
     display: flex;
     flex-direction: column; // 텍스트를 세로로 배치
@@ -40,10 +48,20 @@ const VactorIcon = styled.img`
     width: 10px;
     height: 5px;
 `;
+const Icon = styled.img`
+    width: 10px;
+    height: 5px;
+`;
+const Icon2 = styled.img`
+    width: 10px;
+    height: 11px;
+`;
 
-export default function Main(){
+function Main(){
     const [modalOpen, setModalOpen] = useState(false); // 모달 상태
     const [selectedFilter, setSelectedFilter] = useState(null); // 선택된 필터 상태
+
+    const[sortType, setSortType] = useState("기본 정렬순");
 
     function handleFilterClick(filterName) {
         setSelectedFilter(filterName);
@@ -52,6 +70,9 @@ export default function Main(){
     function onClose(){
         setModalOpen(false);
         setSelectedFilter(null);
+    }
+    function getSortedProducts(){
+        if(sortType == "평점 높은순");
     }
 
     return (
@@ -65,6 +86,9 @@ export default function Main(){
                     onClick={() => {handleFilterClick(filter.name)}} />
             ))}
             </FilterButtonContainer>
+            <Sort>
+                <SortDropdown onChangeSort={setSortType} />
+            </Sort>
             {modalOpen == true && (
                 <Modal onClose={onClose}>
                     <TextBox>
@@ -92,3 +116,4 @@ export default function Main(){
         </Container> 
     )
 }
+export default Main;
