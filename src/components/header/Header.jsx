@@ -37,6 +37,10 @@ const HeaderRight = styled.div`
     align-items: flex-end;
     gap: 36px;
 `;
+const NavButton = styled.div`
+    display: flex;
+    gap: 36px;
+`;
 
 export default function Header(){
 
@@ -44,13 +48,22 @@ export default function Header(){
     const navigate = useNavigate();
     const buttonName = "상품등록";
 
+
     return(
         <div>
             <HeaderContainer>
-                <LogoImage src={logoUrl}/>
+                <LogoImage src={logoUrl} onClick = {() => navigate("/")} />
                 <HeaderRight>
                     {pathname === "/" && (
                         <Button onClick={()=>navigate("/add")}>{buttonName}</Button>
+                    )}
+                    {/* startWith 는 문자열의 시작을 확인하는 메서드 */}
+                    {pathname.startsWith("/item/") && (
+                        <NavButton>
+                        <Button onClick={()=>navigate("/add")}>{buttonName}</Button>
+                        <Button onClick={()=>navigate("/")}>상품삭제</Button>
+                        <Button onClick={()=>navigate("/")}>상품수정</Button>
+                        </NavButton>
                     )}
                     <HomeIcon src={homeUrl}/>
                 </HeaderRight>
@@ -58,4 +71,3 @@ export default function Header(){
         </div>
     );
 }
-
