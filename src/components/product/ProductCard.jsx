@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+
 
 const CardContainer = styled.div`
     display: flex;
@@ -38,9 +40,11 @@ const Review = styled.div`
     line-height: normal;
 `;
 
-function ProductCard({imageUrl, name, price, reviewCount}){
+function ProductCard({itemId, imageUrl, name, price, reviewCount}){
+    const navigate = useNavigate();
+
     return (
-        <CardContainer>
+        <CardContainer onClick={() => navigate(`/item/${itemId}`)}>
             <ProductImage src={imageUrl} alt={name} />
             <ProductName>{name}</ProductName>
             <ProductPrice>{price}원</ProductPrice>
