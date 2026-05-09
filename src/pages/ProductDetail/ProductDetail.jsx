@@ -1,6 +1,9 @@
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import products from "../../data/products";
 import styled from "styled-components";
+import Header from "../../components/header/Header";
+import DeleteModal from "../../components/common/modal/DeleteModal";
 
 const Container = styled.div`
     display: flex;
@@ -52,14 +55,15 @@ const ProductDetailContainer = styled.div`
     padding-top: 80px;
 `;
 const Divider = styled.div`
-  width: 1px;
-  height: 520px;
-  background-color: #eee;
+    width: 2px;
+    height: 830px;
+    background-color: #eee;
 `;
 
 
 export default function ProducDetail(){
     const {id} = useParams();
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     {/* find() = 배열 메서드, 조건에 맞는 첫 번째 요소를 반환 */}
     const product = products.find((p) => p.id === Number(id)
@@ -79,6 +83,13 @@ export default function ProducDetail(){
                 <Name>{product.name}</Name>
                 <ReviewCount>★ 리뷰 {product.reviewCount}</ReviewCount>
             </ProductDetailContainer>
+             {isDeleteModalOpen && (
+            <DeleteModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                onDelete={() => console.log("삭제")}
+            />
+         )}
         </Container>
     )
 }
