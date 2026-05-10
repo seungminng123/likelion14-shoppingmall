@@ -79,7 +79,6 @@ export default function ProductAdd(){
     const [color, setColor] = useState("");
 
     function handleSubmit(e){
-        e.preventDefault();
         const newProduct = {
             id: Date.now(),
             image: "",
