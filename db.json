@@ -1,0 +1,19 @@
+{
+  "shoes": [],
+  "shirt": [
+    {
+      "id": "AoguIk-oxFw",
+      "image": "",
+      "name": "",
+      "rating": 0,
+      "reviews": 0,
+      "price": 0,
+      "soldout": false,
+      "size": "",
+      "type": "shirt",
+      "gender": "unisex",
+      "color": "pink"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
