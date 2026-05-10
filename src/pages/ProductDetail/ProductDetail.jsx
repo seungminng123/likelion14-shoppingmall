@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import products from "../../data/products";
 import styled from "styled-components";
-import Header from "../../components/header/Header";
 import DeleteModal from "../../components/common/modal/DeleteModal";
 
 const Container = styled.div`

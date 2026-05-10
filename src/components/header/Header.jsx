@@ -2,7 +2,7 @@ import styled from "styled-components";
 import logoUrl from "../../assets/images/kream_image.png"
 import homeUrl from "../../assets/icons/home_icon.png"
 import DeleteModal from "../common/modal/DeleteModal";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import { useState } from "react";
 
 // 대문자로 시작! -> 대문자를 컨포넌트로 인식하기 때문
@@ -65,7 +65,7 @@ export default function Header({}){
                         <NavButton>
                         <Button onClick={()=>navigate("/add")}>{buttonName}</Button>
                         <Button onClick={()=>setIsDeleteModalOpen(true)}>상품삭제</Button>
-                        <Button onClick={()=>navigate("/")}>상품수정</Button>
+                        <Button onClick={()=>navigate(`${pathname}/edit`)}>상품수정</Button>
                         </NavButton>
                     )}
                     <HomeIcon src={homeUrl}/>

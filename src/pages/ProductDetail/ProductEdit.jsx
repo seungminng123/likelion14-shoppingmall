@@ -1,6 +1,8 @@
-import { useState } from "react";
+import {useParams} from "react-router-dom";
 import styled from "styled-components";
-import iconurl from "../../assets/icons/add_icon.png"
+import products from "../../data/products";
+import { useState } from "react";
+import iconurl from "../../assets/icons/edit_icon.png"
 
 const Container = styled.div`
     display: flex;
@@ -13,8 +15,14 @@ const IconContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative; // 아이콘과 이미지를 겹치게 하기 위해 position: relative 추가(부모 요소에 상대 위치 설정)
 `;
 const Icon = styled.img`
+    position: absolute; // 자식 요소
+    width: 49px;
+    height: 55px;
+`;
+const Image = styled.img`
     width: 459px;
     height: 602px;
 `;
@@ -67,27 +75,29 @@ const Input = styled.input`
     border-radius: 5px;
 `;
 
-export default function ProductAdd(){
-    const [name, setName] = useState("");
-    const [rating, setRating] = useState("");
-    const [reviews, setReviews] = useState("");
-    const [price, setPrice] = useState("");
-    const [soldout, setSoldout] = useState(false); 
-    const [size, setSize] = useState("");
-    const [type, setType] = useState("");
-    const [gender, setGender] = useState("");
-    const [color, setColor] = useState("");
+export default function ProductEdit(){
+    const {id } = useParams();
+    const product = products.find((p) => p.id === Number(id));
+
+    const [name, setName] = useState(product?.name || "");
+    const [rating, setRating] = useState(product?.rating || "");
+    const [reviews, setReviews] = useState(product?.reviews || "");
+    const [price, setPrice] = useState(product?.price || "");
+    const [soldout, setSoldout] = useState(product?.soldout || false);
+    const [size, setSize] = useState(product?.size || "");
+    const [type, setType] = useState(product?.type || "");
+    const [gender, setGender] = useState(product?.gender || "");
+    const [color, setColor] = useState(product?.color || "");
 
     function handleSubmit(e){
-        e.preventDefault();
-        const newProduct = {
-            id: Date.now(),
-            image: "",
+        const updatedProduct = {
+            id: product.id,
+            image: product.image,
             name: name,
             rating: Number(rating),
             reviews: Number(reviews),
             price: Number(price),
-            soldout : false,
+            soldout : soldout,
             size: size,
             type: type,
             gender: gender,
@@ -95,17 +105,17 @@ export default function ProductAdd(){
         };
     }
 
-
     return(
         <Container>
             <IconContainer>
-                <Icon src={iconurl} alt="Add Icon" />
+                <Icon src={iconurl} alt="edit Icon" />
+                <Image src={product.image} alt={product.name} />
             </IconContainer>
 
                 <Divider />
 
             <TextContainer>
-                <h2>상품 정보 등록</h2>
+                <h2>상품 정보 수정</h2>
                 <Form onSubmit={handleSubmit}>
                     <Label>상품명</Label>
                     <Input value={name} onChange={(e) => setName(e.target.value)} />
@@ -157,7 +167,7 @@ export default function ProductAdd(){
                             </Button>
                         ))}
                     </ButtonBox>
-                    <Button type="submit">등록하기</Button>
+                    <Button type="submit">상품 수정 완료</Button>
 
                 </Form>
             </TextContainer>
