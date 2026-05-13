@@ -33,8 +33,8 @@ function Modal({onClose, children}) {
     }
 
     return (
-        <ModalBackground>
-            <ModalContainer>
+        <ModalBackground onClick={handleModalClose}>
+            <ModalContainer onClick={(e) => e.stopPropagation()}>
                 <XIcon src={IconUrl} alt="Close" onClick={handleModalClose} />
                 {children} 
             </ModalContainer>
