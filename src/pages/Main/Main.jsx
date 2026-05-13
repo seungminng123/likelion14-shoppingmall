@@ -1,5 +1,4 @@
 import FilterButton from "../../components/common/button/FilterButton";
-import { useState } from "react";
 import filters from "../../data/filters";
 import styled from "styled-components"; 
 import Modal from "../../components/common/modal/Modal"
@@ -8,6 +7,8 @@ import IconUrl2 from "../../assets/icons/icon.png";
 import ProductList from "../../components/product/ProductList";
 import products from "../../data/products";
 import SortDropdown from "../../components/common/sort/SortDropdown";
+import { useEffect, useState } from "react";
+import { getShops } from "../../api/shop";
 
 const Container = styled.div`
     max-width: 1200px;
@@ -63,6 +64,22 @@ function Main(){
 
     const[sortType, setSortType] = useState("기본 정렬순");
 
+    const [items, setItems] = useState([]);
+
+    useEffect(() => {
+        let cancelled = false;
+        (async () => {
+            try {
+                const res = await getShops ("clothes");
+                if (!cancelled) { setItems(Array.isArray(res) ? res : []); };
+            } catch {
+                if(!cancelled) { setItems([]); 
+                }
+            }
+        })();
+        return () => { cancelled = true; };
+    }, []);
+
     function handleFilterClick(filterName) {
         setSelectedFilter(filterName);
         setModalOpen(true);
@@ -110,7 +127,7 @@ function Main(){
             )}
             <ProductListContainer>
                 <ProductList 
-                    products={products}
+                    items={items}
                 />
             </ProductListContainer>
         </Container> 
