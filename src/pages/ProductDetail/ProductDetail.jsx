@@ -42,12 +42,14 @@ const Name = styled.div`
     line-height: normal;
 `;
 const ReviewCount = styled.div`
+    display: flex;
     color: #949494;
     font-family: Pretendard;
     font-size: 15px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+    gap: 15px;
 `;
 const ProductDetailContainer = styled.div`
     width: 320px;
@@ -58,6 +60,9 @@ const Divider = styled.div`
     height: 830px;
     background-color: #eee;
 `;
+const Rating = styled.span`
+    color: black;
+`
 
 
 export default function ProducDetail(){
@@ -80,7 +85,10 @@ export default function ProducDetail(){
             <ProductDetailContainer>
                 <Price>{product.price.toLocaleString()}원</Price>
                 <Name>{product.name}</Name>
-                <ReviewCount>★ 리뷰 {product.reviewCount}</ReviewCount>
+                <ReviewCount>
+                    <Rating>★ {product.rating} </Rating>
+                    리뷰 {product.reviews}
+                </ReviewCount>
             </ProductDetailContainer>
              {isDeleteModalOpen && (
             <DeleteModal

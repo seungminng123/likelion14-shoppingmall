@@ -10,18 +10,18 @@ const ProductGrid = styled.div`
   row-gap: 48px;
 `;
 
-function ProductList({products}){
+function ProductList({items}){
     
     return(
         <ProductGrid >
-            {products.map((product) => (
+            {items.map((item) => (
                 <ProductCard 
-                    key={product.id}
-                    itemId={product.id} 
-                    imageUrl={product.image}
-                    name={product.name} 
-                    price={product.price} 
-                    reviewCount={product.reviewCount}
+                    key={item.id}
+                    itemId={item.id} 
+                    imageUrl={item.image}
+                    name={item.name} 
+                    price={`${Number(item.price).toLocaleString()}원`} 
+                    reviewCount={item.reviewCount}
                 />
             ))}
         </ProductGrid>
