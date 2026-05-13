@@ -5,7 +5,6 @@ import Modal from "../../components/common/modal/Modal"
 import IconUrl from "../../assets/icons/vector_icon.png";
 import IconUrl2 from "../../assets/icons/icon.png";
 import ProductList from "../../components/product/ProductList";
-import products from "../../data/products";
 import SortDropdown from "../../components/common/sort/SortDropdown";
 import { useEffect, useState } from "react";
 import { getShops } from "../../api/shop";

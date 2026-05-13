@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import products from "../../data/products";
 import styled from "styled-components";
 import DeleteModal from "../../components/common/modal/DeleteModal";
+import { getShopDetail } from "../../api/shop";
 
 const Container = styled.div`
     display: flex;
@@ -65,14 +65,35 @@ const Rating = styled.span`
 `
 
 
-export default function ProducDetail(){
+export default function ProducDetail({}){
     const {id} = useParams();
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [product, setProduct] = useState(null);
 
-    {/* find() = 배열 메서드, 조건에 맞는 첫 번째 요소를 반환 */}
-    const product = products.find((p) => p.id === Number(id)
-    );
-    {/* Number() 쓰는 이유 = useParams()는 문자열을 반환하므로 숫자로 변환해야 함 */}
+    useEffect(() => {
+        let cancelled = false;
+        (async () => {
+            try {
+                const res = await getShopDetail("clothes",id);
+
+                if (!cancelled) {
+                    console.log(res);
+                    setProduct(res);
+                }
+            } catch {
+                if (!cancelled) {
+                    setProduct(null);
+                }
+            }
+        })();
+        return () => {
+            cancelled = true;
+        };
+    }, [id]);
+
+    if (!product) {
+    return <div>상품을 불러오는 중입니다.</div>;
+}
 
     return(
         <Container>
