@@ -81,8 +81,15 @@ function Main(){
         let cancelled = false;
         (async () => {
             try {
-                const res = await getShops ("clothes");
-                if (!cancelled) { setItems(Array.isArray(res) ? res : []); };
+                const shoes = await getShops("shoes");
+                const clothes  = await getShops ("clothes");
+                
+                if (!cancelled) {
+                setItems([
+                    ...(Array.isArray(clothes) ? clothes : []),
+                    ...(Array.isArray(shoes) ? shoes : []),
+                ]);
+            }
             } catch {
                 if(!cancelled) { setItems([]); 
                 }

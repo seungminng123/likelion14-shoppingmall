@@ -55,16 +55,20 @@ export default function Header({}){
     const { id } = useParams();
 
     async function handleDelete() {
-    try {
-        await deleteShop("clothes", id);
-        alert("상품이 삭제되었습니다.");
-        setIsDeleteModalOpen(false);
-        navigate("/");
-    } catch (error) {
-        console.error(error);
-        alert("상품 삭제 실패");
+        try {
+            try{
+                await deleteShop("clothes", id);
+            } catch{
+                await deleteShop("shoes", id);
+            }
+            alert("상품이 삭제되었습니다.");
+            setIsDeleteModalOpen(false);
+            navigate("/");
+        } catch (error) {
+            console.error(error);
+            alert("상품 삭제 실패");
+        }
     }
-}
     return(
         <div>
             <HeaderContainer>
