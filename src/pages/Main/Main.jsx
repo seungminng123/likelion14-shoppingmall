@@ -75,7 +75,7 @@ function Main(){
     return () => {
         document.body.style.overflow = "auto";
     };
-}, [modalOpen]);
+    }, [modalOpen]);
 
     useEffect(() => {
         let cancelled = false;

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import DeleteModal from "../../components/common/modal/DeleteModal";
 import { getShopDetail } from "../../api/shop";
 
 const Container = styled.div`
@@ -67,9 +66,8 @@ const Rating = styled.span`
 
 export default function ProducDetail({}){
     const {id} = useParams();
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [product, setProduct] = useState(null);
-
+    
     useEffect(() => {
         let cancelled = false;
         (async () => {
@@ -93,7 +91,7 @@ export default function ProducDetail({}){
 
     if (!product) {
     return <div>상품을 불러오는 중입니다.</div>;
-}
+    }
 
     return(
         <Container>
@@ -111,13 +109,6 @@ export default function ProducDetail({}){
                     리뷰 {product.reviews}
                 </ReviewCount>
             </ProductDetailContainer>
-             {isDeleteModalOpen && (
-            <DeleteModal
-                isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
-                onDelete={() => console.log("삭제")}
-            />
-         )}
         </Container>
     )
 }

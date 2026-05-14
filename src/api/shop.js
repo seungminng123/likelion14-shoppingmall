@@ -18,3 +18,7 @@ export const createShop = async (type = "clothes", data) => {
     const res = await api.post(`/${type}`, data);
     return res.data;
 }
+export const deleteShop = async (type = "clothes", id) => {
+    const res = await api.delete(`/${type}/${id}`);
+    return res.data;
+}

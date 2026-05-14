@@ -78,7 +78,7 @@ export default function ProductAdd(){
     const [price, setPrice] = useState("");
     const [soldout, setSoldout] = useState(false); 
     const [size, setSize] = useState("");
-    const [type, setType] = useState("");
+    const [type, setType] = useState("clothes");
     const [gender, setGender] = useState("");
     const [color, setColor] = useState("");
 
@@ -97,6 +97,8 @@ export default function ProductAdd(){
     }
 
     async function handleSubmit(e){
+        e.preventDefault();
+
         const newProduct = {
             image: image,
             name: name,
@@ -192,7 +194,6 @@ export default function ProductAdd(){
                         ))}
                     </ButtonBox>
                     <Button type="submit">등록하기</Button>
-
                 </Form>
             </TextContainer>
         </Container>
