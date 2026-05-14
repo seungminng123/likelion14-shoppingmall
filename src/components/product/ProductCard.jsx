@@ -40,11 +40,11 @@ const Review = styled.div`
     line-height: normal;
 `;
 
-function ProductCard({itemId, imageUrl, name, price, reviewCount}){
+function ProductCard({itemId, type, imageUrl, name, price, reviewCount}){
     const navigate = useNavigate();
 
     return (
-        <CardContainer onClick={() => navigate(`/item/${itemId}`)}>
+        <CardContainer onClick={() => navigate(`/item/${type}/${itemId}`)}>
             <ProductImage src={imageUrl} alt={name} />
             <ProductName>{name}</ProductName>
             <ProductPrice>{price}원</ProductPrice>

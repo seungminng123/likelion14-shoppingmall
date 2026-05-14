@@ -14,12 +14,13 @@ function ProductList({items}){
         <ProductGrid >
             {items.map((item) => (
                 <ProductCard 
-                    key={item.id}
+                    key={`${item.type}-${item.id}`}
                     itemId={item.id} 
+                    type={item.type}
                     imageUrl={item.image}
                     name={item.name} 
                     price={`${Number(item.price).toLocaleString()}`} 
-                    reviewCount={item.reviewCount}
+                    reviewCount={item.reviews}
                 />
             ))}
         </ProductGrid>

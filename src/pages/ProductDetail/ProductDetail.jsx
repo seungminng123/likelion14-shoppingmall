@@ -65,14 +65,14 @@ const Rating = styled.span`
 
 
 export default function ProducDetail({}){
-    const {id} = useParams();
+    const {type, id} = useParams();
     const [product, setProduct] = useState(null);
     
     useEffect(() => {
         let cancelled = false;
         (async () => {
             try {
-                const res = await getShopDetail("clothes",id);
+                const res = await getShopDetail(type ,id);
 
                 if (!cancelled) {
                     console.log(res);
@@ -87,7 +87,7 @@ export default function ProducDetail({}){
         return () => {
             cancelled = true;
         };
-    }, [id]);
+    }, [type, id]);
 
     if (!product) {
     return <div>상품을 불러오는 중입니다.</div>;

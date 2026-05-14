@@ -78,26 +78,34 @@ function Main(){
     }, [modalOpen]);
 
     useEffect(() => {
-        let cancelled = false;
-        (async () => {
-            try {
-                const shoes = await getShops("shoes");
-                const clothes  = await getShops ("clothes");
-                
-                if (!cancelled) {
-                setItems([
-                    ...(Array.isArray(clothes) ? clothes : []),
-                    ...(Array.isArray(shoes) ? shoes : []),
-                ]);
-            }
-            } catch {
-                if(!cancelled) { setItems([]); 
-                }
-            }
-        })();
-        return () => { cancelled = true; };
-    }, []);
+    let cancelled = false;
 
+    (async () => {
+        try {
+        const shoes = await getShops("shoes");
+        const clothes = await getShops("clothes");
+
+        const shoesWithType = Array.isArray(shoes)
+            ? shoes.map((item) => ({ ...item, type: "shoes" }))
+            : [];
+
+        const clothesWithType = Array.isArray(clothes)
+            ? clothes.map((item) => ({ ...item, type: "clothes" }))
+            : [];
+
+        if (!cancelled) {
+            setItems([...clothesWithType, ...shoesWithType]);
+        }
+        } catch (error) {
+        console.error(error);
+        if (!cancelled) setItems([]);
+        }
+    })();
+
+    return () => {
+        cancelled = true;
+    };
+    }, []);
     function handleFilterClick(filterName) {
         setSelectedFilter(filterName);
         setModalOpen(true);

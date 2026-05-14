@@ -22,3 +22,11 @@ export const deleteShop = async (type = "clothes", id) => {
     const res = await api.delete(`/${type}/${id}`);
     return res.data;
 }
+export const updateShop = async (type = "clothes", id, data) => {
+    const res = await api.put(`/${type}/${id}`, data);
+    return res.data;
+}
+export const patchShop = async (type = "clothes", id, data) => {
+    const res = await api.patch(`/${type}/${id}`, data);
+    return res.data;
+}

@@ -1,8 +1,8 @@
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import styled from "styled-components";
-import products from "../../data/products";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import iconurl from "../../assets/icons/edit_icon.png"
+import { getShopDetail, updateShop } from "../../api/shop";
 
 const Container = styled.div`
     display: flex;
@@ -12,6 +12,7 @@ const Container = styled.div`
     padding: 80px 130px;
 `;
 const IconContainer = styled.div`
+    cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -76,40 +77,104 @@ const Input = styled.input`
 `;
 
 export default function ProductEdit(){
-    const {id } = useParams();
-    const product = products.find((p) => p.id === Number(id));
+    const navigate = useNavigate();
+    const {type, id } = useParams();
+    const [product, setProduct] = useState(null);
 
+    const [image, setImage] = useState("");
     const [name, setName] = useState(product?.name || "");
     const [rating, setRating] = useState(product?.rating || "");
     const [reviews, setReviews] = useState(product?.reviews || "");
     const [price, setPrice] = useState(product?.price || "");
     const [soldout, setSoldout] = useState(product?.soldout || false);
     const [size, setSize] = useState(product?.size || "");
-    const [type, setType] = useState(product?.type || "");
+    const [editType, setEditType] = useState(product?.type || "");
     const [gender, setGender] = useState(product?.gender || "");
     const [color, setColor] = useState(product?.color || "");
+    
+    const fileInputRef = useRef(null);
 
-    function handleSubmit(e){
+    useEffect(() => {
+        let cancelled = false;
+
+        (async () => {
+            try {
+                const res = await getShopDetail(type, id);
+
+                if (!cancelled) {
+                    setProduct(res);
+                    setImage(res.image || "");
+                    setName(res.name || "");
+                    setRating(res.rating || "");
+                    setReviews(res.reviews || "");
+                    setPrice(res.price || "");
+                    setSoldout(res.soldout || false);
+                    setSize(res.size || "");
+                    setEditType(res.type || "");
+                    setGender(res.gender || "");
+                    setColor(res.color || "");
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        })();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [type, id]);
+
+    function handleImageClick() {
+        fileInputRef.current.click();
+    }
+
+    function handleImageChange(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const imageUrl = URL.createObjectURL(file);
+        setImage(imageUrl);
+    }
+
+    async function handleSubmit(e){
+        e.preventDefault();
+
         const updatedProduct = {
             id: product.id,
-            image: product.image,
+            image: image,
             name: name,
             rating: Number(rating),
             reviews: Number(reviews),
             price: Number(price),
             soldout : soldout,
             size: size,
-            type: type,
+            type: editType,
             gender: gender,
             color: color,
         };
+        try{
+            await updateShop(editType, id, updatedProduct);
+            alert("상품이 수정되었습니다.");
+            navigate("/");
+        } catch (error) {
+            console.error(error);
+            alert("상품 수정 실패");
+        }
     }
-
+    if (!product) {
+        return <div>상품 정보를 불러오는 중입니다.</div>;
+    }
     return(
         <Container>
-            <IconContainer>
+            <IconContainer onClick={handleImageClick}>
                 <Icon src={iconurl} alt="edit Icon" />
-                <Image src={product.image} alt={product.name} />
+                <Image src={image} alt={name} />
+                <input
+                    type="file"
+                    accept="image/*"
+                    ref={fileInputRef}
+                    onChange={handleImageChange}
+                    style={{ display: "none" }}
+                />
             </IconContainer>
 
                 <Divider />
@@ -130,9 +195,9 @@ export default function ProductEdit(){
 
                     <Label>종류</Label>
                     <ButtonBox>
-                        {[ { label: "shoes", value: "shoes" }, { label: "clothing", value: "shirt" },].map((item) => (
-                            <Button key={item.value} type="button" onClick={() => setType(item.value)} 
-                                style={{ backgroundColor: type === item.value ? "#d9d9d9" : "#F2F2F2",}}>
+                        {[ { label: "shoes", value: "shoes" }, { label: "clothes", value: "clothes" },].map((item) => (
+                            <Button key={item.value} type="button" onClick={() => setEditType(item.value)} 
+                                style={{ backgroundColor: editType === item.value ? "#d9d9d9" : "#F2F2F2",}}>
                                 {item.label}
                             </Button>
                         ))}
