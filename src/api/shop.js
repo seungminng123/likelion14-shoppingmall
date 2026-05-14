@@ -13,3 +13,8 @@ export const getShopDetail = async (type = "clothes", id) => {
     const res = await api.get(`/${type}/${id}`);
     return res.data;
 }
+
+export const createShop = async (type = "clothes", data) => {
+    const res = await api.post(`/${type}`, data);
+    return res.data;
+}
