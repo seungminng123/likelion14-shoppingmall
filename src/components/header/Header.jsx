@@ -4,6 +4,7 @@ import homeUrl from "../../assets/icons/home_icon.png"
 import DeleteModal from "../common/modal/DeleteModal";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
 import { useState } from "react";
+import { deleteShop } from "../../api/shop";
 
 // 대문자로 시작! -> 대문자를 컨포넌트로 인식하기 때문
 const LogoImage = styled.img`
@@ -51,7 +52,23 @@ export default function Header({}){
     const navigate = useNavigate();
     const buttonName = "상품등록";
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const { id } = useParams();
 
+    async function handleDelete() {
+        try {
+            try{
+                await deleteShop("clothes", id);
+            } catch{
+                await deleteShop("shoes", id);
+            }
+            alert("상품이 삭제되었습니다.");
+            setIsDeleteModalOpen(false);
+            navigate("/");
+        } catch (error) {
+            console.error(error);
+            alert("상품 삭제 실패");
+        }
+    }
     return(
         <div>
             <HeaderContainer>
@@ -72,7 +89,11 @@ export default function Header({}){
                 </HeaderRight>
             </HeaderContainer>
             {isDeleteModalOpen && (
-            <DeleteModal onClose={() => setIsDeleteModalOpen(false)}/>)}
+                <DeleteModal
+                    onClose={() => setIsDeleteModalOpen(false)}
+                    onDelete={handleDelete}
+                />
+            )}
         </div>
     );
 }

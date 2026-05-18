@@ -58,7 +58,6 @@ export default function DeleteModal({onClose, onDelete}) {
                         <Button onClick={onClose}>취소</Button>
                     </ButtonBox>
                 </ModalContainer>
-            </ModalBackground>
-                
+            </ModalBackground>        
     )
 }

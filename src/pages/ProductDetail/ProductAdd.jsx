@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import styled from "styled-components";
 import iconurl from "../../assets/icons/add_icon.png"
+import { createShop } from "../../api/shop";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
     display: flex;
@@ -13,6 +15,7 @@ const IconContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 `;
 const Icon = styled.img`
     width: 459px;
@@ -68,20 +71,37 @@ const Input = styled.input`
 `;
 
 export default function ProductAdd(){
+    const [image, setImage] = useState("");
     const [name, setName] = useState("");
     const [rating, setRating] = useState("");
     const [reviews, setReviews] = useState("");
     const [price, setPrice] = useState("");
     const [soldout, setSoldout] = useState(false); 
     const [size, setSize] = useState("");
-    const [type, setType] = useState("");
+    const [type, setType] = useState("clothes");
     const [gender, setGender] = useState("");
     const [color, setColor] = useState("");
 
-    function handleSubmit(e){
+    const fileInputRef = useRef(null);
+
+    const navigate = useNavigate();
+
+    function handleImageClick() {
+        fileInputRef.current.click();
+    }
+    function handleImageChange(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        const imageUrl = URL.createObjectURL(file);
+        setImage(imageUrl);
+    }
+
+    async function handleSubmit(e){
+        e.preventDefault();
+
         const newProduct = {
-            id: Date.now(),
-            image: "",
+            image: image,
             name: name,
             rating: Number(rating),
             reviews: Number(reviews),
@@ -92,13 +112,29 @@ export default function ProductAdd(){
             gender: gender,
             color: color,
         };
+        try {
+            await createShop(type, newProduct);
+
+            alert("상품이 성공적으로 등록되었습니다.");
+            navigate("/");
+        } catch (error) {
+            console.error("상품 등록 실패:", error);
+            alert("상품 등록에 실패했습니다. 다시 시도해주세요.");
+        }
     }
 
 
     return(
         <Container>
-            <IconContainer>
-                <Icon src={iconurl} alt="Add Icon" />
+            <IconContainer onClick={handleImageClick}>
+                <Icon src={image || iconurl} alt="상품 이미지" />
+                <input
+                    type = "file"
+                    accept ="image/*"
+                    ref={fileInputRef}
+                    onChange = {handleImageChange}
+                    style={{ display: "none"}}
+                />
             </IconContainer>
 
                 <Divider />
@@ -114,12 +150,14 @@ export default function ProductAdd(){
                     <Input value={reviews} onChange={(e) => setReviews(e.target.value)} />
                     <Label>가격</Label>
                     <Input value={price} onChange={(e) => setPrice(e.target.value)} />
+                    <Label>이미지 URL</Label>
+                    <Input value={image} onChange={(e) => setImage(e.target.value)} />
                     <Label>사이즈</Label>
                     <Input value={size} onChange={(e) => setSize(e.target.value)} />
 
                     <Label>종류</Label>
                     <ButtonBox>
-                        {[ { label: "shoes", value: "shoes" }, { label: "clothing", value: "shirt" },].map((item) => (
+                        {[ { label: "shoes", value: "shoes" }, { label: "clothes", value: "clothes" },].map((item) => (
                             <Button key={item.value} type="button" onClick={() => setType(item.value)} 
                                 style={{ backgroundColor: type === item.value ? "#d9d9d9" : "#F2F2F2",}}>
                                 {item.label}
@@ -157,7 +195,6 @@ export default function ProductAdd(){
                         ))}
                     </ButtonBox>
                     <Button type="submit">등록하기</Button>
-
                 </Form>
             </TextContainer>
         </Container>

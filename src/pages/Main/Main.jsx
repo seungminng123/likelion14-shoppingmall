@@ -5,7 +5,6 @@ import Modal from "../../components/common/modal/Modal"
 import IconUrl from "../../assets/icons/vector_icon.png";
 import IconUrl2 from "../../assets/icons/icon.png";
 import ProductList from "../../components/product/ProductList";
-import products from "../../data/products";
 import SortDropdown from "../../components/common/sort/SortDropdown";
 import { useEffect, useState } from "react";
 import { getShops } from "../../api/shop";
@@ -76,22 +75,37 @@ function Main(){
     return () => {
         document.body.style.overflow = "auto";
     };
-}, [modalOpen]);
+    }, [modalOpen]);
 
     useEffect(() => {
-        let cancelled = false;
-        (async () => {
-            try {
-                const res = await getShops ("clothes");
-                if (!cancelled) { setItems(Array.isArray(res) ? res : []); };
-            } catch {
-                if(!cancelled) { setItems([]); 
-                }
-            }
-        })();
-        return () => { cancelled = true; };
-    }, []);
+    let cancelled = false;
 
+    (async () => {
+        try {
+        const shoes = await getShops("shoes");
+        const clothes = await getShops("clothes");
+
+        const shoesWithType = Array.isArray(shoes)
+            ? shoes.map((item) => ({ ...item, type: "shoes" }))
+            : [];
+
+        const clothesWithType = Array.isArray(clothes)
+            ? clothes.map((item) => ({ ...item, type: "clothes" }))
+            : [];
+
+        if (!cancelled) {
+            setItems([...clothesWithType, ...shoesWithType]);
+        }
+        } catch (error) {
+        console.error(error);
+        if (!cancelled) setItems([]);
+        }
+    })();
+
+    return () => {
+        cancelled = true;
+    };
+    }, []);
     function handleFilterClick(filterName) {
         setSelectedFilter(filterName);
         setModalOpen(true);

@@ -1,8 +1,6 @@
 import ProductCard from "./ProductCard";
 import styled from "styled-components";
 
-
-
 const ProductGrid = styled.div` 
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -16,12 +14,13 @@ function ProductList({items}){
         <ProductGrid >
             {items.map((item) => (
                 <ProductCard 
-                    key={item.id}
+                    key={`${item.type}-${item.id}`}
                     itemId={item.id} 
+                    type={item.type}
                     imageUrl={item.image}
                     name={item.name} 
-                    price={`${Number(item.price).toLocaleString()}원`} 
-                    reviewCount={item.reviewCount}
+                    price={`${Number(item.price).toLocaleString()}`} 
+                    reviewCount={item.reviews}
                 />
             ))}
         </ProductGrid>
