@@ -3,7 +3,7 @@ import filters from "../../data/filters";
 import styled from "styled-components"; 
 import Modal from "../../components/common/modal/Modal"
 import IconUrl from "../../assets/icons/Vector_icon.png";
-import IconUrl2 from "../../assets/icons/icon.png";
+import IconUrl2 from "../../assets/icons/Icon.png";
 import ProductList from "../../components/product/ProductList";
 import SortDropdown from "../../components/common/sort/SortDropdown";
 import { useEffect, useState } from "react";
