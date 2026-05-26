@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import logoUrl from "../../assets/images/kream_image.png"
+import logoUrl from "../../assets/images/kream_Image.png"
 import homeUrl from "../../assets/icons/home_icon.png"
 import DeleteModal from "../common/modal/DeleteModal";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
