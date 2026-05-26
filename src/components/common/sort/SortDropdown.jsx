@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import IconUrl from "../../../assets/icons/icon.png"
+import IconUrl from "../../../assets/icons/Icon.png"
 import IconUrl2 from "../../../assets/icons/check_icon.png"
 
 const Wrapper = styled.div`
